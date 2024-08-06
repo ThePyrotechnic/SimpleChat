@@ -28,10 +28,7 @@ const onWindowResize = () => {
 const postChat = async () => {
   sendBtn.setAttribute("disabled", "");
 
-  const message = inputText.value;
-
-  addMessage("user", message)
-  chatArea.appendChild(formatChat(message));
+  recordMessage("user", inputText.value)
 
   const response = await fetch("/api/converse", {
     method: "POST",
@@ -44,19 +41,21 @@ const postChat = async () => {
   console.assert(response.status === 200);
 
   const responseJson = await response.json();
-  addMessage(responseJson.role, responseJson.content[0].text);
-  chatArea.appendChild(formatChat(responseJson.content[0].text));
+  recordMessage(responseJson.role, responseJson.content[0].text.substring(2));
   sendBtn.removeAttribute("disabled");
 };
 
-const formatChat = (text) => {
-  const chat = document.createElement("p");
-  chat.innerText = text;
-  return chat;
-}
-
-const addMessage = (role, text) => {
+const recordMessage = (role, text) => {
   conversation.push({"role": role, "content": [{"text": text}]},)
+
+  const username = document.createElement("inline");
+  username.classList.add(role);
+  const message = document.createElement("p");
+  message.classList.add(role)
+  message.innerText = text;
+
+  chatArea.appendChild(username);
+  chatArea.appendChild(message);
 };
 
 const authenticated = () => {
@@ -78,7 +77,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  document.querySelector("#btn-logout").addEventListener("click", logout);
   document.querySelector("#btn-send").addEventListener("click", postChat);
 
   window.addEventListener("resize", onWindowResize);
