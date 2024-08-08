@@ -35,5 +35,5 @@ class _Settings(BaseSettings):
     host: str
     hot_reload: bool = False
     port: int
-    private_key_filepath: str
     public_key_filepath: str
+    tokens_filepath: str

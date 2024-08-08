@@ -29,3 +29,7 @@ class Message(BaseModel):
 
 class ConversationInput(BaseModel):
     messages: list[Message]
+
+
+class TokenInput(BaseModel):
+    api_key: str

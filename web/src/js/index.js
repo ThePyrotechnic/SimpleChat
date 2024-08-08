@@ -10,20 +10,15 @@
 //     GNU Affero General Public License for more details.
 //     You should have received a copy of the GNU Affero General Public License
 //     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-const accessToken = document.cookie.split("; ")
-  .find((row) => row.startsWith("access_token="))?.split("=")[1];
-
 const inputText = document.querySelector("#input-text");
 const chatArea = document.querySelector("#div-chat-area");
+const chatInputArea = document.querySelector("#chat-input-area");
 const sendBtn = document.querySelector("#btn-send");
+const tokenModal = document.querySelector("#token-modal");
+const tokenBtn = document.querySelector("#btn-token");
+const tokenInput = document.querySelector("#input-token");
 
 const conversation = [];
-
-const onWindowResize = () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-};
 
 const postChat = async () => {
   sendBtn.setAttribute("disabled", "");
@@ -58,26 +53,37 @@ const recordMessage = (role, text) => {
   chatArea.appendChild(message);
 };
 
-const authenticated = () => {
-  return accessToken != null;
+const postToken = async () => {
+  const tokenCheck = await fetch("/api/auth", {
+    method: "POST",
+    body: JSON.stringify({
+      "api_key": tokenInput.value,
+    }),
+    headers: { "Content-Type": "application/json" }
+  });
+
+  if (tokenCheck.status === 200) {
+    tokenModal.style.display = "none";
+    chatInputArea.style.display = "flex";
+  }
 };
 
-const logout = () => {
-  document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  window.location.reload();
+const authenticated = async () => {
+  const authCheck = await fetch("/api/auth", {
+      method: "HEAD",
+    });
+
+  return authCheck.status === 200;
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if (authenticated()) {
+  if (await authenticated()) {
     // authed
   } else {
-    await fetch("/api/token", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    });
+    tokenModal.style.display = "flex";
+    chatInputArea.style.display = "none";
   }
 
   document.querySelector("#btn-send").addEventListener("click", postChat);
-
-  window.addEventListener("resize", onWindowResize);
+  document.querySelector("#btn-token").addEventListener("click", postToken);
 });

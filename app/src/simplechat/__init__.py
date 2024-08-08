@@ -17,13 +17,13 @@ import json
 
 import boto3
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey, RSAPrivateKey
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPublicKey
 from fastapi import Depends, FastAPI, HTTPException, Security, status
-from fastapi.responses import Response, JSONResponse
+from fastapi.responses import JSONResponse, Response
 from fastapi.security import APIKeyCookie
 import jwt
 
-from simplechat.models import ConversationInput, Message
+from simplechat.models import ConversationInput, Message, TokenInput
 from simplechat.settings import settings
 
 
@@ -41,17 +41,23 @@ bedrock = boto3.Session(
 with open(settings().public_key_filepath, "rb") as public_key_file:
     PUBLIC_KEY: RSAPublicKey = serialization.load_pem_public_key(public_key_file.read())
 
-with open(settings().private_key_filepath, "rb") as private_key_file:
-    PRIVATE_KEY: RSAPrivateKey = serialization.load_pem_private_key(
-        private_key_file.read(), password=None
-    )
+
+with open(settings().tokens_filepath, "r", encoding="UTF-8") as tokens_file:
+    TOKENS = json.load(tokens_file)
 
 
 async def check_api_key(api_key: str = Security(api_key_cookie)) -> str:
     try:
-        return jwt.decode(api_key, PUBLIC_KEY, ["RS256"])
+        token = jwt.decode(api_key, PUBLIC_KEY, ["RS256"])
     except jwt.DecodeError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        TOKENS[token["claimed_id"]]
+    except KeyError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    return token
 
 
 @app.get("/summary/today", tags=["summary"])
@@ -78,20 +84,22 @@ async def post_conversation(
     )
 
 
-@app.get("/token", tags=["auth"])
-async def get_token():
+@app.head("/auth", tags=["auth"])
+async def check_token(_=Depends(check_api_key)):
+    return
+
+
+@app.post("/auth", tags=["auth"])
+async def post_token(token_input: TokenInput):
+    await check_api_key(token_input.api_key)
+
     response = Response(status_code=status.HTTP_200_OK)
     response.set_cookie(
         key="access_token",
-        value=jwt.encode(
-            {"claimed_id": "test_user"},
-            key=PRIVATE_KEY,
-            algorithm="RS256",
-            headers={"kid": "app_rsa_public.pem"},
-        ),
+        value=token_input.api_key,
         expires=60 * 60 * 24 * 30,  # 1 month
         secure=True,
-        httponly=False,
+        httponly=True,
         samesite="strict",
     )
     return response

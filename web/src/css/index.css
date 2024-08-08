@@ -170,6 +170,21 @@ div.chatbox {
     border-color: var(--name-color);
     border-width: 2px;
     max-width: var(--max-width);
+}
+
+.modal {
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    overflow: auto;
+}
+
+.input-area {
     input {
         padding-left: 14px;
         flex-grow: 85;

@@ -26,6 +26,7 @@ pytest = "^8.3.2"
 
 [tool.poetry.scripts]
 simplechat = "src.simplechat.__main__:main"
+simplechat_tokens = "src.generate_tokens:main"
 
 [build-system]
 requires = ["poetry-core"]
