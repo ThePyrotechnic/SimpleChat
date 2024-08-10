@@ -16,25 +16,54 @@ bigballer web - collect items
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width-device-width, initial-scale=1"/>
-  <title>Simple Chat</title>
-  <link rel="stylesheet" href="css/index.css" />
-  <script type="module" src="js/index.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width-device-width, initial-scale=1"/>
+    <title>Simple Chat</title>
+    <link rel="stylesheet" href="css/index.css"/>
+    <script type="module" src="js/index.js"></script>
 </head>
 
 <body>
-  <div id="div-chat-area">
-  </div>
-  <div id="chat-input-area" class="chatbox input-area">
-    <input id="input-text" placeholder="Ask anything..."/>
-    <button id="btn-send">Send</button>
-  </div>
-  <div id="token-modal" class="modal" hidden="">
-    <div class="chatbox input-area">
-      <input id="input-token" placeholder="Your access token"/>
-      <button id="btn-token">Login</button>
+<main class="flex flex-col min-h-screen max-w-screen-md mx-auto py-10 justify-between">
+    <div id="token-modal" class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
+        <div>
+            <div class="text-xl font-medium text-black">Auth Token</div>
+            <div class="mx-2 p-2 bg-slate-200 rounded-full flex flex-row">
+                <input tabindex="10" id="input-token"
+                       class="placeholder:text-slate-400 placeholder:text-lg text-lg block bg-transparent w-full border rounded-md py-2 pl-9 pr-3 focus:outline-none"
+                       placeholder="Ask anything" type="text"/>
+                <svg tabindex="20" id="btn-token" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="1.5" stroke="currentColor" class="size-12 stroke-slate-600 hover:drop-shadow-md">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="m15 11.25-3-3m0 0-3 3m3-3v7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+            </div>
+        </div>
     </div>
-</div>
+    <section id="chat-area" class="flex flex-col">
+        <inline class="user">You</inline>
+        <div class="mx-2 self-end bg-send-bg text-send-text rounded-lg px-4 py-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. </div>
+        <inline class="sender">AI</inline>
+        <div class="px-8 py-2 mx-2 bg-receive-bg rounded-lg text-receive-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto praesentium nemo quas eveniet consequuntur animi saepe quibusdam, vel non quia itaque perspiciatis harum impedit recusandae incidunt rem velit ratione ab.</div>
+        <inline class="user">You</inline>
+        <div class="mx-2 self-end bg-send-bg text-send-text rounded-lg px-4 py-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. </div>
+        <inline class="sender">AI</inline>
+        <div class="px-8 py-2 mx-2 bg-receive-bg rounded-lg text-receive-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto praesentium nemo quas eveniet consequuntur animi saepe quibusdam, vel non quia itaque perspiciatis harum impedit recusandae incidunt rem velit ratione ab.</div>
+        <inline class="user">You</inline>
+        <div class="mx-2 self-end bg-send-bg text-send-text rounded-lg px-4 py-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. </div>
+        <inline class="sender">AI</inline>
+        <div class="px-8 py-2 mx-2 bg-receive-bg rounded-lg text-receive-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto praesentium nemo quas eveniet consequuntur animi saepe quibusdam, vel non quia itaque perspiciatis harum impedit recusandae incidunt rem velit ratione ab.</div>
+    </section>
+    <div id="chat-input-area" class="mx-2 p-2 bg-white border-2 border-gray-500 rounded-full flex flex-row">
+        <input tabindex="10" id="input-text"
+               class="placeholder:text-slate-400 placeholder:text-lg text-lg block bg-transparent w-full rounded-md py-2 pl-9 pr-3 focus:outline-none"
+               placeholder="Ask anything" type="text"/>
+        <svg tabindex="20" id="btn-send" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="1.5" stroke="currentColor" class="size-12 stroke-white fill-send-bg hover:drop-shadow-md">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m15 11.25-3-3m0 0-3 3m3-3v7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>
+    </div>
+</main>
 </body>
 </html>

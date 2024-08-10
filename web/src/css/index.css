@@ -18,15 +18,9 @@ From:
 https://www.freecodecamp.org/news/design-imessage-like-chat-bubble-react-native/
 */
 
-/*
-Media queries from:
-https://stackoverflow.com/questions/6370690/media-queries-how-to-target-desktop-tablet-and-mobile
- */
-
-/*
-Media queries from:
-https://stackoverflow.com/questions/6370690/media-queries-how-to-target-desktop-tablet-and-mobile
- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
     --send-bg: #0B93F6;
@@ -41,97 +35,6 @@ https://stackoverflow.com/questions/6370690/media-queries-how-to-target-desktop-
     --font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
-html {
-    overflow: hidden;
-}
-
-body {
-    font-family: var(--font-family);
-    font-size: var(--font-size);
-    font-weight: normal;
-    max-width: var(--max-width);
-    background-color: var(--page-background);
-    overflow: hidden;
-
-    /* smartphones, iPhone, portrait 480x320 phones */
-    @media (min-width:320px)  {
-        margin: 0 auto;
-    }
-
-    /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
-    @media (min-width:641px)  {
-        height: 60vh;
-        max-height: var(--desktop-height);
-        margin: 50px auto;
-    }
-}
-
-p {
-    word-wrap: break-word;
-    margin: 2px 12px;
-    line-height: 24px;
-    position: relative;
-    padding: 10px 20px;
-    border-radius: 25px;
-
-    /* smartphones, iPhone, portrait 480x320 phones */
-    @media (min-width:320px)  {
-        max-width: 80vw;
-    }
-
-    /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
-    @media (min-width:641px)  {
-        max-width: calc(var(--max-width) / 2);
-    }
-
-    &:before, &:after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        height: 25px;
-    }
-}
-
-p.user {
-    color: var(--send-color);
-    background: var(--send-bg);
-    align-self: flex-end;
-
-    &:before {
-        right: -7px;
-        width: 20px;
-        background-color: var(--send-bg);
-        border-bottom-left-radius: 16px 14px;
-    }
-
-    &:after {
-        right: -26px;
-        width: 26px;
-        background-color: var(--page-background);
-        border-bottom-left-radius: 10px;
-    }
-}
-
-p.assistant {
-    background: var(--receive-bg);
-    color: black;
-    align-self: flex-start;
-
-    &:before {
-        left: -7px;
-        width: 20px;
-        background-color: var(--receive-bg);
-        border-bottom-right-radius: 16px 14px;
-    }
-
-    &:after {
-        left: -26px;
-        width: 26px;
-        background-color: var(--page-background);
-        border-bottom-right-radius: 10px;
-    }
-}
-
 inline {
     margin-top: 12px;
     margin-left: 12px;
@@ -142,66 +45,4 @@ inline {
 
 inline.user {
     align-self: flex-end;
-}
-
-#div-chat-area {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin-bottom: 10px;
-
-    /* smartphones, iPhone, portrait 480x320 phones */
-    @media (min-width:320px)  {
-        height: calc(100vh - 2.5em);
-    }
-
-    /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
-    @media (min-width:641px)  {
-        height: calc(var(--desktop-height) - 2.5em);
-    }
-}
-
-div.chatbox {
-    display: flex;
-    flex-direction: row;
-    border-radius: 100vmax;
-    border-style: solid;
-    border-color: var(--name-color);
-    border-width: 2px;
-    max-width: var(--max-width);
-}
-
-.modal {
-    display: none;
-    flex-direction: row;
-    justify-content: center;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    overflow: auto;
-}
-
-.input-area {
-    input {
-        padding-left: 14px;
-        flex-grow: 85;
-        border: none;
-        background: none;
-        resize: none;
-        font-family: var(--font-family);
-        font-size: var(--font-size);
-    }
-    button {
-        font-family: var(--font-family);
-        font-size: var(--font-size);
-        flex-grow: 15;
-        border-radius: 100vmax;
-        margin: 4px;
-        border: none;
-        background-color: var(--send-bg);
-        color: var(--send-color);
-    }
 }
